@@ -1,0 +1,17 @@
+module(name = "a", version = "1.0")
+
+bazel_dep(name = "rules_jvm_external", version = "6.4")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = [
+        "com.google.errorprone:error_prone_annotations:2.27.1",
+    ],
+    lock_file = "@a//:maven_install.json",
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+)
+use_repo(maven, "maven", "unpinned_maven")
+
+
