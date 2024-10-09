@@ -1,0 +1,25 @@
+module(
+    name = "b",
+    version = "1.0.1",
+)
+
+bazel_dep(name = "rules_jvm_external", version = "6.4")
+bazel_dep(name = "a", version = "1.0")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = [
+        "org.slf4j:slf4j-api:2.0.7",
+    ],
+    lock_file = "@b//:maven_install.json",
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+)
+maven.artifact(
+    testonly = True,
+    artifact = "junit-jupiter",
+    group = "org.junit.jupiter",
+    version = "5.9.3",
+)
+use_repo(maven, "maven", "unpinned_maven")
